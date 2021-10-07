@@ -1,5 +1,12 @@
 import React, { Component } from 'react'
 import Moment from 'react-moment'
+import {
+  MDBCard,
+  MDBCardTitle,
+  MDBCardText,
+  MDBCardBody,
+  MDBCardHeader
+} from 'mdb-react-ui-kit'
 
 export default class ListTasks extends Component {
   constructor (props) {
@@ -10,17 +17,28 @@ export default class ListTasks extends Component {
 
   createTasks (note) {
     return (
-      <div className='task__content' key={note.key}>
-        <Moment format='MMM Do h:mm:ss a' className='task__date'>
-          {note.date}
-        </Moment>
-        <p>{note.text}</p>
-        <button
-          className='btn btn-danger'
-          onClick={() => this.deleteNote(note.key)}
+      <div>
+        <MDBCard
+          background='primary'
+          className='text-white mb-3'
+          style={{ maxWidth: '18rem' }}
         >
-          Delete
-        </button>
+          <MDBCardHeader background='success'>
+            <Moment format='MMM Do h:mm:ss a'>{note.date}</Moment>
+          </MDBCardHeader>
+          <MDBCardBody>
+            <MDBCardTitle>{note.title}</MDBCardTitle>
+            <MDBCardText>{note.text}</MDBCardText>
+          </MDBCardBody>
+          <MDBCardHeader>
+            <button
+              className='btn btn-danger'
+              onClick={() => this.deleteNote(note.key)}
+            >
+              Delete
+            </button>
+          </MDBCardHeader>
+        </MDBCard>
       </div>
     )
   }

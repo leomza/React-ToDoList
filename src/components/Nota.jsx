@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import shortid from 'shortid'
 import ListTasks from './ListTasks'
+import TextareaAutosize from 'react-textarea-autosize';
 
 export default class Nota extends Component {
   constructor (props) {
@@ -12,9 +13,10 @@ export default class Nota extends Component {
   }
 
   addNote (event) {
-    if (this._inputElement.value !== '') {
+    if (this._inputElementText.value !== '') {
       const newNote = {
-        text: this._inputElement.value,
+        title: this._inputElementTitle.value,
+        text: this._inputElementText.value,
         key: shortid.generate(),
         date: new Date()
       }
@@ -24,7 +26,8 @@ export default class Nota extends Component {
           notes: [...oldState.notes, newNote]
         }
       })
-      this._inputElement.value = ''
+      this._inputElementText.value = '';
+      this._inputElementTitle.value = '';
     } else {
       alert('El campo no puede estar vacio')
     }
@@ -45,14 +48,21 @@ export default class Nota extends Component {
     return (
       <div>
         <form className='form-group' onSubmit={this.addNote}>
-          <textarea
-            ref={a => (this._inputElement = a)}
-            className='form-control w-50 p-3'
+          <input
+            type='text'
+            ref={a => (this._inputElementTitle = a)}
+            className='form-control w-50 p-1 form__title'
+            value={this.state.value}
+            placeholder='Enter a title of the note (optional)'
+          />
+          <TextareaAutosize
+            ref={a => (this._inputElementText = a)}
+            className='form-control w-50 p-5'
             value={this.state.value}
             placeholder='Please enter a new note here'
           />
           <input
-            className='btn btn-primary submit__button'
+            className='btn btn-success submit__button'
             type='submit'
             value='Add'
           />
