@@ -7,17 +7,20 @@ import {
   MDBCardBody,
   MDBCardHeader
 } from 'mdb-react-ui-kit'
+import swal from 'sweetalert'
+
+//In this Component Im going to render all the information of the notes
 
 export default class ListTasks extends Component {
   constructor (props) {
     super(props)
 
-    this.createTasks = this.createTasks.bind(this)
+    this.createNotes = this.createNotes.bind(this)
   }
 
-  createTasks (note) {
+  createNotes (note) {
     return (
-      <div>
+      <div key={note.key}>
         <MDBCard
           background='primary'
           className='text-white mb-3'
@@ -31,6 +34,7 @@ export default class ListTasks extends Component {
             <MDBCardText>{note.text}</MDBCardText>
           </MDBCardBody>
           <MDBCardHeader>
+            {/* Need to add a button with an event that contains the key of the note that Im going to delete */}
             <button
               className='btn btn-danger'
               onClick={() => this.deleteNote(note.key)}
@@ -43,15 +47,34 @@ export default class ListTasks extends Component {
     )
   }
 
+  //This function is called by the onClick Event and is reciving the "key" of the note that Im going to delete
   deleteNote (key) {
-    if (window.confirm('Delete the item?')) {
-      this.props.deleteNote(key)
-    }
+    swal({
+      title: 'Are you sure?',
+      text: 'Once deleted, you will not be able to recover this note!',
+      icon: 'warning',
+      buttons: true,
+      dangerMode: true
+    }).then(willDelete => {
+      if (willDelete) {
+        //I use the function "delete" that Im sending by the props from the another Component and pass the "key" of the note that I want to delete
+        this.props.delete(key)
+        swal('Poof! Your note has been deleted!', {
+          icon: 'success'
+        })
+      } else {
+        swal('Your note is safe!')
+      }
+    })
   }
 
   render () {
+    //Get the "prop (array of notes)" that Im passing from the other Component
     const todoNotes = this.props.arrayNotes
-    const listNotes = todoNotes.map(this.createTasks)
+
+    //Then I need to convert that array of notes into JSX/HTML elements, I do that doing a map and relying on the CreateNote function
+    //The new variable listNotes will contain all the elements ready to show
+    const listNotes = todoNotes.map(this.createNotes)
 
     return <div className='task__wrapper'>{listNotes}</div>
   }
