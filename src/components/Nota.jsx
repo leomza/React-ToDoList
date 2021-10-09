@@ -91,7 +91,7 @@ export default class Nota extends Component {
         <div>
           {/* I need to pass the information to the other component to render it, so I pass all the state of the array Notes and the function to delete a note */}
           {/* As well I do a ternary operator to show a message if the array is empty, that means that I dont have any note to show */}
-          {this.state.notes.length > 0 ? (
+          {this.state.notes.length ? (
             <ListTasks arrayNotes={this.state.notes} delete={this.delete} />
           ) : (
             <h3 className='text-center'>There are not notes to show</h3>
